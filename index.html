@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitalización Industrial: Guía Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Bebas+Neue&display=swap');
+
+        :root {
+            --industrial-red: #D32F2F;
+            --industrial-dark: #1A1A1A;
+            --industrial-white: #FFFFFF;
+            --industrial-gray: #F5F5F5;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--industrial-gray);
+            color: var(--industrial-dark);
+            overflow: hidden;
+        }
+
+        /* NAVEGACIÓN LATERAL */
+        .sidebar-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 4px solid transparent;
+        }
+
+        .sidebar-item.active {
+            background-color: var(--industrial-white);
+            color: var(--industrial-red);
+            border-right: 4px solid var(--industrial-red);
+        }
+
+        /* SECCIONES DE CONTENIDO */
+        .content-section {
+            display: none; 
+            height: 100%;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .content-section.active {
+            display: flex !important; 
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .industrial-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--industrial-red);
+            transition: transform 0.2s;
+        }
+        
+        .industrial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .bebas { font-family: 'Bebas Neue', sans-serif; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--industrial-red); border-radius: 10px; }
+        
+        .splash-bg {
+            background: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1280');
+            background-size: cover;
+            background-position: center;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <!-- Navegación Lateral -->
+    <nav class="w-64 bg-[#D32F2F] text-white flex flex-col shadow-xl z-20 shrink-0">
+        <!-- Encabezado CINEII -->
+        <div class="p-6 text-center">
+            <h1 class="bebas text-xl tracking-tighter leading-none opacity-90">𝗖𝗜𝗡𝗘𝗜𝗜 𝗟𝗔𝗧𝗔𝗠</h1>
+            <div class="bebas text-6xl font-bold leading-none mt-1 tracking-widest">2026</div>
+            <div class="h-0.5 w-full bg-white/30 mt-3 mb-1"></div>
+            <p class="text-[9px] uppercase tracking-[0.2em] opacity-80">Guía de Digitalización</p>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-2" id="main-nav">
+            <button id="btn-splash" onclick="switchTab('splash')" class="sidebar-item active w-full flex items-center px-6 py-4 text-left hover:bg-red-700">
+                <i class="fas fa-play-circle w-6"></i> <span class="ml-3 font-semibold text-sm uppercase">Portada</span>
+            </button>
+            <button onclick="switchTab('industry40')" class="sidebar-item w-full flex items-center px-6 py-4 text-left hover:bg-red-700">
+                <i class="fas fa-industry w-6"></i> <span class="ml-3 font-semibold text-sm uppercase">Industria 4.0</span>
+            </button>
+            <button onclick="switchTab('home')" class="sidebar-item w-full flex items-center px-6 py-4 text-left hover:bg-red-700">
+                <i class="fas fa-th-large w-6"></i> <span class="ml-3 font-semibold text-sm uppercase">Dashboard</span>
+            </button>
+            <button onclick="switchTab('iiot')" class="sidebar-item w-full flex items-center px-6 py-4 text-left hover:bg-red-700">
+                <i class="fas fa-network-wired w-6"></i> <span class="ml-3 font-semibold text-sm uppercase">IIoT Industrial</span>
+            </button>
+            <button onclick="switchTab('data')" class="sidebar-item w-full flex items-center px-6 py-4 text-left hover:bg-red-700">
+                <i class="fas fa-chart-line w-6"></i> <span class="ml-3 font-semibold text-sm uppercase">Análisis de Datos</span>
+            </button>
+            <button onclick="switchTab('roles')" class="sidebar-item w-full flex items-center px-6 py-4 text-left hover:bg-red-700">
+                <i class="fas fa-user-tie w-6"></i> <span class="ml-3 font-semibold text-sm uppercase">Casos de Aplicación</span>
+            </button>
+            <button onclick="switchTab('predictive')" class="sidebar-item w-full flex items-center px-6 py-4 text-left hover:bg-red-700">
+                <i class="fas fa-tools w-6"></i> <span class="ml-3 font-semibold text-sm uppercase">Mantenimiento</span>
+            </button>
+        </div>
+
+        <div class="p-6 bg-red-800 text-[10px] text-center opacity-60 uppercase tracking-tighter">
+            Ingeniería Industrial & Digitalización
+        </div>
+    </nav>
+
+    <main class="flex-1 h-full overflow-y-auto bg-gray-50 p-8 relative text-left">
+
+        <!-- SECCIÓN 0: PORTADA -->
+        <section id="splash" class="content-section active splash-bg rounded-2xl border-4 border-white shadow-2xl">
+            <div class="text-center p-12 bg-white/90 backdrop-blur-md rounded-xl border-t-8 border-red-600 max-w-2xl shadow-2xl">
+                <i class="fas fa-industry text-6xl text-red-600 mb-6"></i>
+                <h1 class="bebas text-7xl text-gray-800 leading-none mb-4 text-center">
+                    Una mirada a la <br>
+                    <span class="text-red-600">fábrica digital</span>
+                </h1>
+                <div class="h-1 w-24 bg-red-600 mx-auto mb-6"></div>
+                <h2 class="bebas text-4xl text-gray-500 tracking-widest mb-10 text-center text-center">Industria 4.0</h2>
+                <button onclick="switchTab('industry40')" class="px-10 py-4 bg-red-600 text-white rounded-full font-bold uppercase tracking-widest hover:bg-red-700 transition-all shadow-lg">
+                    Empezar exploración <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: INDUSTRIA 4.0 -->
+        <section id="industry40" class="content-section">
+            <div class="mb-8">
+                <h2 class="bebas text-6xl text-gray-800 uppercase tracking-tight">Visión <span class="text-red-600">Industria 4.0</span></h2>
+                <div class="h-1 w-32 bg-red-600 mt-2"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-6 rounded shadow-sm border-b-4 border-red-600 text-center">
+                    <i class="fas fa-link text-3xl text-red-600 mb-3"></i>
+                    <h4 class="font-bold text-xs uppercase mb-1 tracking-tighter">Conectividad</h4>
+                    <p class="text-[10px] text-gray-500">Máquinas comunicadas entre sí.</p>
+                </div>
+                <div class="bg-white p-6 rounded shadow-sm border-b-4 border-red-600 text-center">
+                    <i class="fas fa-eye text-3xl text-red-600 mb-3"></i>
+                    <h4 class="font-bold text-xs uppercase mb-1 tracking-tighter">Visibilidad</h4>
+                    <p class="text-[10px] text-gray-500">Saber qué ocurre en vivo.</p>
+                </div>
+                <div class="bg-white p-6 rounded shadow-sm border-b-4 border-red-600 text-center">
+                    <i class="fas fa-brain text-3xl text-red-600 mb-3"></i>
+                    <h4 class="font-bold text-xs uppercase mb-1 tracking-tighter">Inteligencia</h4>
+                    <p class="text-[10px] text-gray-500">Decisiones basadas en datos.</p>
+                </div>
+                <div class="bg-white p-6 rounded shadow-sm border-b-4 border-red-600 text-center">
+                    <i class="fas fa-sync-alt text-3xl text-red-600 mb-3"></i>
+                    <h4 class="font-bold text-xs uppercase mb-1 tracking-tighter">Adaptación</h4>
+                    <p class="text-[10px] text-gray-500">Cambio rápido del proceso.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="industrial-card p-6 bg-white">
+                    <h3 class="font-bold text-lg mb-4 border-b pb-2 uppercase tracking-tighter">Evolución de la Ingeniería</h3>
+                    <div class="space-y-4 text-xs font-bold uppercase">
+                        <div class="flex items-center justify-between p-3 bg-gray-100 rounded border-l-4 border-gray-400 text-gray-500 italic">Era Tradicional: Automatización sin conexión</div>
+                        <div class="text-center"><i class="fas fa-arrow-down text-red-600 animate-bounce"></i></div>
+                        <div class="flex items-center justify-between p-3 bg-red-600 text-white rounded border-l-4 border-red-900 shadow-md">Industria 4.0: Fábrica Inteligente y Conectada</div>
+                    </div>
+                </div>
+
+                <div class="industrial-card p-6 bg-gray-800 text-white relative overflow-hidden">
+                    <i class="fas fa-user-gear opacity-10 text-9xl absolute -right-6 -bottom-6"></i>
+                    <h3 class="bebas text-2xl text-red-500 mb-4 tracking-wider text-left">Cambios Reales en tu Trabajo</h3>
+                    <div class="space-y-3 relative z-10 text-left">
+                        <div class="flex items-center">
+                            <i class="fas fa-mobile-screen text-red-500 mr-3"></i>
+                            <p class="text-[11px] font-semibold uppercase tracking-tighter">Supervisión Móvil: Control total desde tu tablet.</p>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-file-excel text-red-500 mr-3"></i>
+                            <p class="text-[11px] font-semibold uppercase tracking-tighter">Adiós al Excel manual: Los datos fluyen solos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: ANÁLISIS DE DATOS -->
+        <section id="data" class="content-section">
+            <div class="mb-8">
+                <h2 class="bebas text-6xl text-gray-800 uppercase tracking-tight">Análisis de <span class="text-red-600">Datos</span></h2>
+                <div class="h-1 w-32 bg-red-600 mt-2"></div>
+                <p class="text-xs text-gray-500 mt-2 uppercase font-bold tracking-widest italic">"Convertir números en dinero y tiempo extra"</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="industrial-card p-6 border-l-4 border-red-600">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4 text-red-600">
+                        <i class="fas fa-calendar-check text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm uppercase mb-2">Predicción de Producción</h3>
+                    <p class="text-xs text-gray-600 text-left">Analiza ventas para decirte exactamente <b>cuánto producir</b>, evitando excesos de stock.</p>
+                </div>
+
+                <div class="industrial-card p-6 border-l-4 border-red-600">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4 text-red-600">
+                        <i class="fas fa-search-dollar text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm uppercase mb-2">Ahorro de Materia Prima</h3>
+                    <p class="text-xs text-gray-600 text-left">Identifica puntos de desperdicio para <b>bajar el costo unitario</b> inmediatamente.</p>
+                </div>
+
+                <div class="industrial-card p-6 border-l-4 border-red-600">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4 text-red-600">
+                        <i class="fas fa-stopwatch text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-sm uppercase mb-2">Tiempos Muertos Ocultos</h3>
+                    <p class="text-xs text-gray-600 text-left">Detecta micro-paradas que <b>reducen el 20% de la eficiencia diaria</b> sin ser reportadas.</p>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 class="text-red-600 font-bold uppercase text-xs mb-3 italic">Ejemplo práctico:</h4>
+                <p class="text-xs text-gray-500 leading-relaxed text-left">
+                    Si el IIoT te dice: "La máquina 5 tiene 90°C", el <b>Análisis de Datos</b> concluye: "Cada vez que llega a esa temperatura, la falla es inminente. Detenla 10 minutos ahora y evita un paro de 4 horas".
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CASOS DE APLICACIÓN -->
+        <section id="roles" class="content-section">
+            <div class="mb-8">
+                <h2 class="bebas text-6xl text-gray-800 uppercase tracking-tight">Casos de <span class="text-red-600">Aplicación</span></h2>
+                <div class="h-1 w-32 bg-red-600 mt-2"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-8 border-red-600">
+                    <div class="flex items-center mb-4 text-left">
+                        <i class="fas fa-user-tie text-red-600 text-2xl mr-4"></i>
+                        <h3 class="font-bold text-lg uppercase tracking-tighter">Gerente de Operaciones</h3>
+                    </div>
+                    <p class="text-xs text-gray-600 mb-3 font-semibold uppercase text-red-600 text-left">Control de Capacidad</p>
+                    <p class="text-[11px] text-gray-500 text-left">Usa datos para predecir picos de demanda y ajustar turnos antes de que lleguen pedidos urgentes.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-8 border-red-600">
+                    <div class="flex items-center mb-4 text-left">
+                        <i class="fas fa-truck-ramp-box text-red-600 text-2xl mr-4"></i>
+                        <h3 class="font-bold text-lg uppercase tracking-tighter">Supply Chain</h3>
+                    </div>
+                    <p class="text-xs text-gray-600 mb-3 font-semibold uppercase text-red-600 text-left">Logística en Vivo</p>
+                    <p class="text-[11px] text-gray-500 text-left">Monitoreo con IIoT para saber exactamente cuándo llegará la materia prima y evitar paros por desabasto.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-8 border-red-600">
+                    <div class="flex items-center mb-4 text-left">
+                        <i class="fas fa-shield-halved text-red-600 text-2xl mr-4"></i>
+                        <h3 class="font-bold text-lg uppercase tracking-tighter">Ing. de Confiabilidad</h3>
+                    </div>
+                    <p class="text-xs text-gray-600 mb-3 font-semibold uppercase text-red-600 text-left">Paros Cero</p>
+                    <p class="text-[11px] text-gray-500 text-left">Analiza vibraciones de motores vía remota para programar reparaciones en momentos de baja producción.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-8 border-red-600">
+                    <div class="flex items-center mb-4 text-left">
+                        <i class="fas fa-check-double text-red-600 text-2xl mr-4"></i>
+                        <h3 class="font-bold text-lg uppercase tracking-tighter">Control de Calidad</h3>
+                    </div>
+                    <p class="text-xs text-gray-600 mb-3 font-semibold uppercase text-red-600 text-left">Cero Defectos</p>
+                    <p class="text-[11px] text-gray-500 text-left">Utiliza visión artificial para descartar piezas defectuosas al instante, logrando calidad superior al 99%.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: DASHBOARD -->
+        <section id="home" class="content-section">
+            <h2 class="bebas text-5xl text-gray-800 mb-6">Panel de <span class="text-red-600">Eficiencia</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-center">
+                <div class="industrial-card p-6 flex items-center justify-center">
+                    <div class="bg-red-100 p-4 rounded-full text-red-600 mr-4"><i class="fas fa-bolt text-2xl"></i></div>
+                    <div class="text-left"><p class="text-xs uppercase text-gray-400 font-bold tracking-tighter text-left">Aumento OEE</p><h3 class="text-3xl font-bold">+24%</h3></div>
+                </div>
+                <div class="industrial-card p-6 flex items-center justify-center">
+                    <div class="bg-red-100 p-4 rounded-full text-red-600 mr-4"><i class="fas fa-trash-alt text-2xl"></i></div>
+                    <div class="text-left"><p class="text-xs uppercase text-gray-400 font-bold tracking-tighter text-left">Scrap</p><h3 class="text-3xl font-bold">-18%</h3></div>
+                </div>
+                <div class="industrial-card p-6 flex items-center justify-center">
+                    <div class="bg-red-100 p-4 rounded-full text-red-600 mr-4"><i class="fas fa-clock text-2xl"></i></div>
+                    <div class="text-left"><p class="text-xs uppercase text-gray-400 font-bold tracking-tighter text-left">Disponibilidad</p><h3 class="text-3xl font-bold">99.2%</h3></div>
+                </div>
+            </div>
+            <div class="p-6 bg-white rounded-lg border italic text-xs text-gray-500 text-left">"Los datos son el combustible del Ingeniero Industrial moderno."</div>
+        </section>
+
+        <!-- SECCIÓN: IIoT -->
+        <section id="iiot" class="content-section">
+            <h2 class="bebas text-5xl text-gray-800 mb-6 uppercase">Infraestructura <span class="text-red-600">IIoT</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <div class="bg-white p-6 rounded shadow-sm border-l-4 border-red-600">
+                    <h4 class="font-bold text-red-600 uppercase text-xs mb-2 text-left">Captura de Señales</h4>
+                    <p class="text-xs text-gray-600 font-medium text-left">Sensores instalados en planta que envían parámetros de operación cada milisegundo al sistema central.</p>
+                </div>
+                <div class="bg-gray-200 rounded-lg flex items-center justify-center p-8 border border-gray-300">
+                    <i class="fas fa-project-diagram text-7xl text-red-600"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: MANTENIMIENTO -->
+        <section id="predictive" class="content-section">
+            <h2 class="bebas text-5xl text-gray-800 mb-6 uppercase">Gestión de <span class="text-red-600">Activos</span></h2>
+            <div class="p-6 bg-white border-l-8 border-red-600">
+                <h3 class="text-xl font-bold mb-2 uppercase text-red-600 text-left">Mantenimiento Predictivo</h3>
+                <p class="text-sm text-gray-600 text-left">Sustitución de componentes basada en el desgaste real y no en tiempos fijos, evitando fallos catastróficos.</p>
+                <div class="mt-6 flex gap-4 text-center">
+                    <div class="flex-1 p-3 bg-red-50 rounded"><h5 class="text-red-600 font-bold">30%</h5><p class="text-[10px] uppercase font-bold">Menos Costo</p></div>
+                    <div class="flex-1 p-3 bg-red-50 rounded"><h5 class="text-red-600 font-bold">20%</h5><p class="text-[10px] uppercase font-bold">Vida Útil</p></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = Array.from(document.querySelectorAll('.sidebar-item')).find(btn => 
+                btn.getAttribute('onclick').includes("'" + tabId + "'")
+            );
+            if (activeBtn) activeBtn.classList.add('active');
+
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active'); 
+            });
+
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.add('active'); 
+            }
+            document.querySelector('main').scrollTop = 0;
+        }
+    </script>
+
+</body>
+</html>
